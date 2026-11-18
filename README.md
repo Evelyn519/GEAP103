@@ -8,11 +8,7 @@ The Ezy cloud-sticker logo is in `assets/ezy-logo.png`. The plane and skateboard
 
 ## Run the app
 
-Serve this folder with any static web server and open `index.html`. Use the language selector in the header to switch between English and Traditional Chinese. The app has no build step or package dependencies. KK phonetics are bundled where available, with an online dictionary fallback for other words; online lookups require an internet connection and are cached in the browser. Vocabulary cards show the KK transcription, meaning, and an example sentence in that order. The Listen button selects an installed American English browser voice when available and requests `en-US` as its fallback. Definitions and example sentences for words without built-in content are looked up through the free Dictionary API and cached in the browser. Those external definitions are in English; selected academic glossary terms include Chinese translations and curated examples.
-
-## Pronunciation data attribution
-
-`pronunciation-index.js` contains American English IPA pronunciations converted to KK-style symbols from [open-dict-data/ipa-dict](https://github.com/open-dict-data/ipa-dict) and supplemental pronunciations from [CMUSphinx/cmudict](https://github.com/cmusphinx/cmudict). The bundled dictionaries currently cover 1,967 of the 7,000 library words. Other words are looked up online through the free Dictionary API and cached when a pronunciation is available. Their MIT and CMUdict licenses are included in `assets/IPA-DICT-LICENSE` and `assets/CMUDICT-LICENSE`, respectively. IPA-to-KK conversion is approximate.
+Serve this folder with any static web server and open `index.html`. Use the language selector in the header to switch between English and Traditional Chinese. The app has no build step or package dependencies. The Listen button selects an installed American English browser voice when available and requests `en-US` as its fallback. Definitions and example sentences for words without built-in content are looked up through the free Dictionary API and cached in the browser. Those external definitions are in English; selected academic glossary terms include Chinese translations and curated examples.
 
 ## Word index attribution
 

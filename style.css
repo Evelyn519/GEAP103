@@ -128,7 +128,6 @@ h1, h2, h3, p { margin-top: 0; }
 .word-content { padding: 35px 0 22px; text-align: center; }
 .word-sparkle { display: inline-block; color: var(--gold); font-size: 16px; animation: twinkle 2.7s ease-in-out infinite; }
 .word-content h2 { margin: 7px 0 3px; font-family: var(--serif); font-size: clamp(38px, 6vw, 52px); font-weight: 400; letter-spacing: -.8px; }
-.word-pronunciation { min-height: 17px; margin: 0; color: #73839a; font-size: 12px; }
 .word-definition { min-height: 56px; padding: 18px 5px 12px; border-top: 1px solid #edf0f4; color: #526176; font-family: var(--serif); font-size: 17px; line-height: 1.45; text-align: center; }
 .word-definition { white-space: pre-line; }
 .word-example { margin: 0 0 8px; color: #818d9c; font-size: 11px; font-style: italic; line-height: 1.5; text-align: center; }

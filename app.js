@@ -89,8 +89,7 @@ const COPY = {
     wordLibraryCounts: "7,000 words · 200 academic", chooseWordMeaning: "Choose a word to see its meaning.",
     listen: "Listen", previous: "Previous", next: "Next", wordLibrary: "WORD LIBRARY", findWord: "Find a word",
     searchVocabulary: "Search vocabulary", searchWordPlaceholder: "Search a word…", prioritizeAcademic: "Prioritize academic words",
-    searchResults: "Vocabulary search results", searchHint: "KK phonetics appear below each word when available. Listen requests an American English browser voice.",
-    kkPronunciation: "KK", kkLookingUp: "Looking up KK pronunciation…", kkUnavailable: "KK pronunciation unavailable",
+    searchResults: "Vocabulary search results", searchHint: "Listen plays the word in an American English browser voice.",
     exampleLookingUp: "Looking up an example sentence…", exampleUnavailable: "Example sentence unavailable.",
     readingPractice: "READING PRACTICE", momentToRead: "A moment to read",
     readingIntro: "Read closely. The details can help you understand what the writer wants you to notice.",
@@ -154,8 +153,7 @@ const COPY = {
     wordLibraryCounts: "7,000 個單字 · 200 個學術詞彙", chooseWordMeaning: "選擇一個單字查看釋義。",
     listen: "聆聽發音", previous: "上一個", next: "下一個", wordLibrary: "詞彙庫", findWord: "查找單字",
     searchVocabulary: "搜尋詞彙", searchWordPlaceholder: "搜尋英文單字…", prioritizeAcademic: "優先顯示學術詞彙",
-    searchResults: "詞彙搜尋結果", searchHint: "可查得的 KK 音標會顯示在單字下方；點選聆聽可使用瀏覽器的美式英語語音。",
-    kkPronunciation: "KK 音標", kkLookingUp: "正在查詢 KK 音標…", kkUnavailable: "目前無 KK 音標資料",
+    searchResults: "詞彙搜尋結果", searchHint: "點選聆聽可使用瀏覽器的美式英語語音。",
     exampleLookingUp: "正在查詢例句…", exampleUnavailable: "目前無例句資料。",
     readingPractice: "分級閱讀", momentToRead: "來讀一篇短文",
     readingIntro: "仔細閱讀文章，留意細節，想想作者希望你注意什麼。",
@@ -432,9 +430,15 @@ const STORAGE = {
   mastered: "word-garden-mastered",
   custom: "word-garden-custom-words",
   definitions: "word-garden-definitions",
-  examples: "word-garden-examples",
-  pronunciations: "word-garden-pronunciations"
+  examples: "word-garden-examples"
 };
+for (const key of ["word-garden-kk-pronunciations-v2", "word-garden-pronunciations"]) {
+  try {
+    localStorage.removeItem(key);
+  } catch (error) {
+    console.error(`Could not remove obsolete pronunciation data ${key}:`, error);
+  }
+}
 const screens = [...document.querySelectorAll(".screen")];
 const navigation = [...document.querySelectorAll("[data-screen]")];
 const levelSelect = document.querySelector("#level-select");
@@ -454,7 +458,6 @@ let customWords = loadArray(STORAGE.custom).filter((entry) =>
 );
 let cachedDefinitions = loadObject(STORAGE.definitions);
 let cachedExamples = loadObject(STORAGE.examples);
-let cachedPronunciations = loadObject(STORAGE.pronunciations);
 let currentWord = ACADEMIC_WORDS[0];
 let wordList = [];
 let currentQuestion = 0;
@@ -463,7 +466,6 @@ let quizAnswers = [];
 let quizSelections = [];
 let answered = false;
 let lookupRequest = 0;
-let pronunciationRequest = 0;
 let currentConversation = "greetings";
 let conversationQuizActive = false;
 let conversationQuizChoice = null;
@@ -636,8 +638,6 @@ function renderWord() {
   document.querySelector("#word-label").textContent = academic ? t("labelAcademic") : entry ? t("labelPersonal") : t("labelLibrary");
   document.querySelector("#word-category").textContent = academic ? t("categoryAcademic") : entry ? t("categoryPersonal") : t("categoryVocabulary");
   document.querySelector("#word-term").textContent = currentWord;
-  document.querySelector("#word-pronunciation").textContent = "";
-  loadWordPronunciation();
   exampleElement.textContent = "";
   exampleElement.classList.add("hidden");
   document.querySelector("#word-position").textContent = academic && fallbackIndex >= 0
@@ -734,60 +734,6 @@ function lookupDictionary(word) {
     dictionaryRequests.set(key, request);
   }
   return dictionaryRequests.get(key);
-}
-
-function toKK(ipa) {
-  let transcription = ipa
-    .replace(/[\/\[\]()]/g, "")
-    .trim()
-    .toLowerCase();
-  const replacements = [
-    [/t͡ʃ|tʃ/g, "tʃ"], [/d͡ʒ|dʒ/g, "dʒ"], [/ɜː?r|ɜr/g, "ɝ"], [/əɹ|ər/g, "ɚ"],
-    [/eɪ/g, "e"], [/oʊ/g, "o"], [/ɪə/g, "ɪr"], [/ʊə/g, "ʊr"],
-    [/ɹ/g, "r"], [/ɫ/g, "l"], [/ɡ/g, "g"], [/ɾ/g, "t"], [/ɒ/g, "ɑ"],
-    [/ɐ/g, "ə"], [/ɜ/g, "ɝ"], [/ʉ/g, "u"], [/ʍ/g, "w"], [/ɱ/g, "m"],
-    [/͡|ː|ʔ/g, ""]
-  ];
-  for (const [pattern, replacement] of replacements) transcription = transcription.replace(pattern, replacement);
-  if (!transcription || /[^a-zɑæʌɔɛɪɝɚəʊuɡʃʒθðŋˈˌ.]/u.test(transcription)) return "";
-  return `/${transcription}/`;
-}
-
-function loadWordPronunciation() {
-  const element = document.querySelector("#word-pronunciation");
-  const word = currentWord.toLocaleLowerCase();
-  const indexed = window.kkPronunciationIndex && window.kkPronunciationIndex[word];
-  const cached = cachedPronunciations[word];
-  if (indexed || cached) {
-    element.textContent = `${t("kkPronunciation")}: ${indexed || cached}`;
-    return;
-  }
-
-  const request = ++pronunciationRequest;
-  element.textContent = t("kkLookingUp");
-  lookupDictionary(currentWord)
-    .then((results) => {
-      const candidates = results.flatMap((entry) => [
-        entry.phonetic,
-        ...(entry.phonetics || []).map((phonetic) => phonetic.text)
-      ]).filter((phonetic) => typeof phonetic === "string" && phonetic.trim());
-      const pronunciation = candidates.map(toKK).find(Boolean);
-      if (pronunciation) {
-        cachedPronunciations[word] = pronunciation;
-        if (!saveValue(STORAGE.pronunciations, cachedPronunciations)) {
-          console.error("Could not save KK pronunciations to browser storage.");
-        }
-      }
-      if (request === pronunciationRequest) {
-        element.textContent = pronunciation
-          ? `${t("kkPronunciation")}: ${pronunciation}`
-          : t("kkUnavailable");
-      }
-    })
-    .catch((error) => {
-      console.error("Could not look up KK pronunciation:", error);
-      if (request === pronunciationRequest) element.textContent = t("kkUnavailable");
-    });
 }
 
 function replayAnimation(element, className) {
