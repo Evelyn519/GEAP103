@@ -1,0 +1,227 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#f4f7fb">
+    <meta name="description" content="Build English vocabulary, read level-matched passages, and practice critical reading." data-i18n-content="metaDescription">
+    <title>Ezy | English practice</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="vocabulary-index.js" defer></script>
+    <script src="pronunciation-index.js" defer></script>
+    <script src="app.js" defer></script>
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="topbar">
+        <a class="brand" href="#" data-screen="home" aria-label="Ezy home" data-i18n-aria-label="brandHome">
+          <img class="brand-logo" src="assets/ezy-logo.png" alt="Ezy">
+        </a>
+        <div class="level-picker">
+          <label for="level-select" data-i18n="yourLevel">Your level</label>
+          <select id="level-select" aria-label="Choose your CEFR level" data-i18n-aria-label="chooseLevel">
+            <option>A1</option>
+            <option>A2</option>
+            <option>B1</option>
+            <option>B2</option>
+            <option>C1</option>
+            <option>C2</option>
+          </select>
+        </div>
+        <div class="language-picker">
+          <label for="language-select" data-i18n="language">Language</label>
+          <select id="language-select" aria-label="Choose language" data-i18n-aria-label="chooseLanguage">
+            <option value="en">English</option>
+            <option value="zh">繁體中文</option>
+          </select>
+        </div>
+      </header>
+
+      <nav class="main-nav" aria-label="Main navigation" data-i18n-aria-label="mainNavigation">
+        <button class="nav-button active" type="button" data-screen="home" aria-current="page" data-i18n="home">Home</button>
+        <button class="nav-button" type="button" data-screen="learn" data-i18n="learn">Learn</button>
+        <button class="nav-button" type="button" data-screen="read" data-i18n="read">Read</button>
+        <button class="nav-button" type="button" data-screen="conversations" data-i18n="conversationNav">Conversations</button>
+        <button class="nav-button" type="button" data-screen="quiz" data-i18n="quiz">Quiz</button>
+        <button class="nav-button" type="button" data-screen="my-words" data-i18n="myWords">My words</button>
+      </nav>
+
+      <main>
+        <section class="screen home-screen" id="home-screen" aria-labelledby="home-title">
+          <div class="home-hero">
+            <div class="hero-copy">
+              <p class="eyebrow" data-i18n="yourEnglishPractice">YOUR ENGLISH PRACTICE</p>
+              <h1 id="home-title"><span class="hero-title-lead" data-i18n="growYour">Grow your</span><span class="hero-title-accent" data-i18n="wordPower">word power.</span></h1>
+              <p class="intro-copy" data-i18n="homeIntro">A little practice today can open up a whole new world.</p>
+              <button class="button button-primary" type="button" data-screen="learn" data-i18n="startLearning">Start learning <span aria-hidden="true">→</span></button>
+            </div>
+            <div class="hero-art">
+              <img class="hero-image" src="assets/ezy-bear-plane.png" alt="" aria-hidden="true">
+            </div>
+          </div>
+
+          <div class="stats-grid" aria-label="Your learning at a glance" data-i18n-aria-label="learningAtAGlance">
+            <article class="stat-card"><span class="stat-icon">✳</span><strong id="mastered-stat">0</strong><span data-i18n="wordsMastered">words mastered</span></article>
+            <article class="stat-card"><span class="stat-icon">▤</span><strong>7,000</strong><span data-i18n="wordsToExplore">words to explore</span></article>
+            <article class="stat-card"><span class="stat-icon">✦</span><strong>200</strong><span data-i18n="academicEssentials">academic essentials</span></article>
+          </div>
+
+          <div class="section-heading">
+            <div><p class="eyebrow" data-i18n="pickPractice">PICK UP WHERE YOU LIKE</p><h2 data-i18n="choosePractice">Choose a practice</h2></div>
+          </div>
+          <div class="practice-grid">
+            <button class="practice-card" type="button" data-screen="learn">
+              <span class="practice-icon icon-vocab">Aa</span><span class="practice-copy"><strong data-i18n="vocabulary">Vocabulary</strong><span data-i18n="vocabularyDescription">Search, listen, and grow your word list.</span></span><span class="card-arrow">→</span>
+            </button>
+            <button class="practice-card" type="button" data-screen="read">
+              <span class="practice-icon icon-read">▤</span><span class="practice-copy"><strong data-i18n="reading">Reading</strong><span data-i18n="readingDescription">Practical passages matched to your level.</span></span><span class="card-arrow">→</span>
+            </button>
+            <button class="practice-card" type="button" data-screen="quiz">
+              <span class="practice-icon icon-quiz">✳</span><span class="practice-copy"><strong data-i18n="criticalReading">Critical reading</strong><span data-i18n="criticalReadingDescription">Make inferences and examine an author's ideas.</span></span><span class="card-arrow">→</span>
+            </button>
+            <button class="practice-card" type="button" data-screen="conversations">
+              <span class="practice-icon icon-conversation">☏</span><span class="practice-copy"><strong data-i18n="dailyConversations">Daily Conversations</strong><span data-i18n="dailyConversationDescription">Practice useful phrases for everyday moments.</span></span><span class="card-arrow">→</span>
+            </button>
+          </div>
+        </section>
+
+        <section class="screen hidden" id="learn-screen" aria-labelledby="learn-title">
+          <div class="page-heading">
+            <div><p class="eyebrow" data-i18n="vocabularyStudio">VOCABULARY STUDIO</p><h1 id="learn-title" data-i18n="meetNewWord">Meet a new word</h1><p class="page-subtitle" data-i18n="vocabularyIntro">Academic essentials are ready first. Search the full word garden whenever you like.</p></div>
+            <img class="page-mascot learning-mascot" src="assets/ezy-bear-skateboard.png" alt="" aria-hidden="true">
+            <span class="count-pill" data-i18n="wordLibraryCounts">7,000 words · 200 academic</span>
+          </div>
+          <div class="learn-layout">
+            <article class="word-card">
+              <div class="card-topline"><span class="word-label" id="word-label">ACADEMIC ESSENTIAL</span><span class="word-category" id="word-category">Word</span></div>
+              <div class="word-content">
+                <span class="word-sparkle" aria-hidden="true">✳</span>
+                <h2 id="word-term"></h2>
+                <p class="word-pronunciation" id="word-pronunciation"></p>
+              </div>
+              <div class="word-definition" id="word-definition" aria-live="polite" data-i18n="chooseWordMeaning">Choose a word to see its meaning.</div>
+              <p class="word-example hidden" id="word-example"></p>
+              <div class="word-actions">
+                <button class="button button-outline" id="speak-button" type="button"><span aria-hidden="true">◖</span><span data-i18n="listen">Listen</span></button>
+                <button class="button button-primary" id="master-button" type="button">Mark mastered</button>
+              </div>
+              <p class="inline-status" id="word-status" aria-live="polite"></p>
+              <div class="card-controls">
+                <button class="button button-quiet" id="previous-word" type="button">← <span data-i18n="previous">Previous</span></button>
+                <span id="word-position" aria-live="polite"></span>
+                <button class="button button-quiet" id="next-word" type="button"><span data-i18n="next">Next</span> →</button>
+              </div>
+            </article>
+            <aside class="search-panel" aria-labelledby="search-title">
+              <div class="search-heading"><div><p class="eyebrow" data-i18n="wordLibrary">WORD LIBRARY</p><h2 id="search-title" data-i18n="findWord">Find a word</h2></div><span class="library-total" id="library-total"></span></div>
+              <label class="search-box"><span aria-hidden="true">⌕</span><span class="visually-hidden" data-i18n="searchVocabulary">Search vocabulary</span><input id="word-search" type="search" placeholder="Search a word…" data-i18n-placeholder="searchWordPlaceholder" autocomplete="off"></label>
+              <label class="priority-toggle"><input id="academic-first" type="checkbox" checked><span data-i18n="prioritizeAcademic">Prioritize academic words</span></label>
+              <ul class="search-results" id="search-results" aria-label="Vocabulary search results" data-i18n-aria-label="searchResults"></ul>
+              <p class="search-hint" data-i18n="searchHint">Select a word for its definition. Pronunciation uses your browser's speech voice.</p>
+            </aside>
+          </div>
+        </section>
+
+        <section class="screen hidden" id="read-screen" aria-labelledby="read-title">
+          <div class="page-heading">
+            <div><p class="eyebrow"><span data-i18n="readingPractice">READING PRACTICE</span> · <span id="reading-level"></span></p><h1 id="read-title" data-i18n="momentToRead">A moment to read</h1><p class="page-subtitle" data-i18n="readingIntro">Read closely. The details can help you understand what the writer wants you to notice.</p></div>
+            <img class="page-mascot reading-mascot" src="assets/ezy-bear-plane.png" alt="" aria-hidden="true">
+            <span class="count-pill" id="passage-count"></span>
+          </div>
+          <article class="reading-card">
+            <div class="reading-meta"><span id="passage-topic"></span><span id="passage-time"></span></div>
+            <h2 id="passage-title"></h2>
+            <div class="passage-body" id="passage-body"></div>
+            <aside class="passage-vocabulary" id="passage-vocabulary" aria-label="Useful vocabulary" data-i18n-aria-label="usefulVocabulary"></aside>
+            <div class="reading-controls">
+              <button class="button button-primary" id="passage-quiz" type="button"><span data-i18n="checkUnderstanding">Check your understanding</span> <span aria-hidden="true">→</span></button>
+            </div>
+          </article>
+          <div class="reading-tip"><span aria-hidden="true">✦</span><p><strong data-i18n="readingTip">Reading tip</strong> <span data-i18n="readingTipText">Notice the facts, then ask what the writer believes about them. Inference is about what the text suggests, not just what it states.</span></p></div>
+        </section>
+
+        <section class="screen hidden" id="conversations-screen" aria-labelledby="conversations-title">
+          <div class="page-heading">
+            <div><p class="eyebrow" data-i18n="conversationPractice">SPEAK WITH CONFIDENCE</p><h1 id="conversations-title" data-i18n="dailyConversations">Daily Conversations</h1><p class="page-subtitle" data-i18n="conversationIntro">Practice useful English for everyday situations, one friendly exchange at a time.</p></div>
+            <img class="page-mascot conversation-mascot" src="assets/ezy-bear-plane.png" alt="" aria-hidden="true">
+          </div>
+          <div class="conversation-topics" role="group" aria-label="Conversation topics" data-i18n-aria-label="conversationTopics">
+            <button class="topic-button active" type="button" data-conversation="greetings"><span aria-hidden="true">👋</span><span data-i18n="greetings">Greetings</span></button>
+            <button class="topic-button" type="button" data-conversation="shopping"><span aria-hidden="true">🛍️</span><span data-i18n="shopping">Shopping</span></button>
+            <button class="topic-button" type="button" data-conversation="food"><span aria-hidden="true">🥪</span><span data-i18n="orderingFood">Ordering food</span></button>
+            <button class="topic-button" type="button" data-conversation="directions"><span aria-hidden="true">🧭</span><span data-i18n="directions">Asking for directions</span></button>
+          </div>
+          <article class="conversation-card">
+            <div class="conversation-card-heading">
+              <div><p class="eyebrow" data-i18n="everydayEnglish">EVERYDAY ENGLISH</p><h2 id="conversation-title"></h2><p id="conversation-setting" class="conversation-setting"></p></div>
+              <button class="button button-outline" id="play-dialogue" type="button"><span aria-hidden="true">♫</span><span data-i18n="playDialogue">Play dialogue</span></button>
+            </div>
+            <div class="dialogue-lines" id="dialogue-lines"></div>
+            <p class="conversation-status" id="conversation-status" aria-live="polite"></p>
+            <div class="conversation-footer">
+              <span class="conversation-hint" data-i18n="conversationHint">Tap the speaker to hear each line in American English.</span>
+              <button class="button button-primary" id="conversation-quiz-start" type="button"><span data-i18n="quickQuiz">Quick quiz</span><span aria-hidden="true">→</span></button>
+            </div>
+          </article>
+          <section class="conversation-quiz hidden" id="conversation-quiz" aria-labelledby="conversation-question">
+            <div class="conversation-quiz-heading"><span class="quiz-sticker" aria-hidden="true">✦</span><div><p class="eyebrow" data-i18n="checkYourUnderstanding">CHECK YOUR UNDERSTANDING</p><h2 id="conversation-question"></h2></div></div>
+            <div class="conversation-options" id="conversation-options"></div>
+            <p class="conversation-feedback" id="conversation-feedback" aria-live="polite"></p>
+            <button class="button button-outline conversation-retry hidden" id="conversation-quiz-retry" type="button" data-i18n="retryConversationQuiz">Try again</button>
+          </section>
+        </section>
+
+        <section class="screen hidden" id="quiz-screen" aria-labelledby="quiz-title">
+          <div class="page-heading">
+            <div><p class="eyebrow" data-i18n="thinkBeyondWords">THINK BEYOND THE WORDS</p><h1 id="quiz-title" data-i18n="readingCheck">Reading check</h1><p class="page-subtitle" data-i18n="quizIntro">Use evidence from the passage to make an inference, identify the author's stance, and think critically.</p></div>
+            <img class="page-mascot quiz-mascot" src="assets/ezy-bear-quiz.png" alt="" aria-hidden="true">
+            <span class="count-pill" id="quiz-progress"></span>
+          </div>
+          <article class="quiz-card" id="quiz-card">
+            <div class="question-type" id="question-type"></div>
+            <h2 class="question-prompt" id="question-prompt"></h2>
+            <div class="answer-list" id="answer-list" role="group" aria-labelledby="question-prompt"></div>
+            <p class="quiz-feedback" id="quiz-feedback" aria-live="polite"></p>
+            <button class="button button-primary hidden" id="next-question" type="button">Next question <span aria-hidden="true">→</span></button>
+          </article>
+          <p class="quiz-source" id="quiz-source"></p>
+        </section>
+
+        <section class="screen hidden" id="results-screen" aria-labelledby="results-title" aria-live="polite">
+          <article class="results-card">
+            <span class="results-sparkle" aria-hidden="true">✳</span>
+            <p class="eyebrow" data-i18n="roundComplete">ROUND COMPLETE</p>
+            <h1 id="results-title" data-i18n="lookGrow">Look at you grow.</h1>
+            <p class="results-score" id="results-score"></p>
+            <p class="results-message" id="results-message"></p>
+            <div class="results-details" id="results-details"></div>
+            <div class="results-actions">
+              <button class="button button-primary" id="try-again" type="button"><span data-i18n="tryAgain">Try again</span> <span aria-hidden="true">↻</span></button>
+              <button class="button button-outline" type="button" data-screen="home" data-i18n="backHome">Back to home</button>
+            </div>
+          </article>
+        </section>
+
+        <section class="screen hidden" id="my-words-screen" aria-labelledby="my-words-title">
+          <div class="page-heading"><div><p class="eyebrow" data-i18n="yourProgress">YOUR PROGRESS</p><h1 id="my-words-title" data-i18n="myWords">My words</h1><p class="page-subtitle" data-i18n="myWordsIntro">Words you have mastered and words you want to keep close.</p></div><span class="count-pill" id="mastered-count"></span></div>
+          <div class="my-words-layout">
+            <section class="list-panel"><h2 data-i18n="masteredWords">Mastered words</h2><ul class="mastered-list" id="mastered-list"></ul></section>
+            <section class="list-panel custom-panel">
+              <h2 data-i18n="addWord">Add your own word</h2>
+              <form class="word-form" id="word-form">
+                <label for="custom-word" data-i18n="wordLabel">Word</label><input id="custom-word" name="word" maxlength="40" required placeholder="e.g. curious" data-i18n-placeholder="wordPlaceholder">
+                <label for="custom-definition" data-i18n="meaningLabel">Meaning</label><textarea id="custom-definition" name="definition" rows="3" maxlength="240" required placeholder="What does it mean?" data-i18n-placeholder="meaningPlaceholder"></textarea>
+                <label for="custom-example"><span data-i18n="exampleLabel">Example</span> <span class="optional" data-i18n="optional">(optional)</span></label><input id="custom-example" name="example" maxlength="180" placeholder="Use it in a sentence" data-i18n-placeholder="examplePlaceholder">
+                <button class="button button-primary" type="submit"><span data-i18n="saveWord">Save my word</span> <span aria-hidden="true">→</span></button>
+                <p class="inline-status" id="custom-status" aria-live="polite"></p>
+              </form>
+              <h2 class="custom-list-heading" data-i18n="savedWords">Your saved words</h2><ul class="custom-list" id="custom-list"></ul>
+            </section>
+          </div>
+        </section>
+      </main>
+
+      <footer class="footer"><span aria-hidden="true">✳</span><span data-i18n="footer">Small steps make strong roots.</span><span aria-hidden="true">✳</span></footer>
+    </div>
+  </body>
+</html>
