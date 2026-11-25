@@ -41,7 +41,6 @@
         <button class="nav-button" type="button" data-screen="learn" data-i18n="learn">Learn</button>
         <button class="nav-button" type="button" data-screen="read" data-i18n="read">Read</button>
         <button class="nav-button" type="button" data-screen="conversations" data-i18n="conversationNav">Conversations</button>
-        <button class="nav-button" type="button" data-screen="quiz" data-i18n="quiz">Quiz</button>
         <button class="nav-button" type="button" data-screen="my-words" data-i18n="myWords">My words</button>
       </nav>
 
@@ -75,9 +74,6 @@
             <button class="practice-card" type="button" data-screen="read">
               <span class="practice-icon icon-read">▤</span><span class="practice-copy"><strong data-i18n="reading">Reading</strong><span data-i18n="readingDescription">Practical passages matched to your level.</span></span><span class="card-arrow">→</span>
             </button>
-            <button class="practice-card" type="button" data-screen="quiz">
-              <span class="practice-icon icon-quiz">✳</span><span class="practice-copy"><strong data-i18n="criticalReading">Critical reading</strong><span data-i18n="criticalReadingDescription">Make inferences and examine an author's ideas.</span></span><span class="card-arrow">→</span>
-            </button>
             <button class="practice-card" type="button" data-screen="conversations">
               <span class="practice-icon icon-conversation">☏</span><span class="practice-copy"><strong data-i18n="dailyConversations">Daily Conversations</strong><span data-i18n="dailyConversationDescription">Practice useful phrases for everyday moments.</span></span><span class="card-arrow">→</span>
             </button>
@@ -95,10 +91,18 @@
               <div class="card-topline"><span class="word-label" id="word-label">ACADEMIC ESSENTIAL</span><span class="word-category" id="word-category">Word</span></div>
               <div class="word-content">
                 <span class="word-sparkle" aria-hidden="true">✳</span>
-                <h2 id="word-term"></h2>
+                <h2 id="word-term"><span id="word-term-text"></span><span id="word-part-of-speech" class="word-part-of-speech" aria-live="polite"></span></h2>
               </div>
-              <div class="word-definition" id="word-definition" aria-live="polite" data-i18n="chooseWordMeaning">Choose a word to see its meaning.</div>
-              <p class="word-example hidden" id="word-example"></p>
+              <div class="word-details">
+                <section class="word-definition-section">
+                  <h3 data-i18n="simpleDefinition">Simple Definition</h3>
+                  <p class="word-definition" id="word-definition" aria-live="polite" data-i18n="chooseWordMeaning">Choose a word to see its meaning.</p>
+                </section>
+                <section class="word-examples">
+                  <h3 data-i18n="exampleSentences">Example Sentences</h3>
+                  <ol id="word-examples" aria-live="polite"></ol>
+                </section>
+              </div>
               <div class="word-actions">
                 <button class="button button-outline" id="speak-button" type="button"><span aria-hidden="true">◖</span><span data-i18n="listen">Listen</span></button>
                 <button class="button button-primary" id="master-button" type="button">Mark mastered</button>
@@ -132,33 +136,74 @@
             <div class="passage-body" id="passage-body"></div>
             <aside class="passage-vocabulary" id="passage-vocabulary" aria-label="Useful vocabulary" data-i18n-aria-label="usefulVocabulary"></aside>
             <div class="reading-controls">
+              <button class="button button-quiet" id="previous-passage" type="button">← <span data-i18n="previousPassage">Previous passage</span></button>
+              <span id="passage-position" class="passage-position" aria-live="polite"></span>
               <button class="button button-primary" id="passage-quiz" type="button"><span data-i18n="checkUnderstanding">Check your understanding</span> <span aria-hidden="true">→</span></button>
+              <button class="button button-quiet" id="next-passage" type="button"><span data-i18n="nextPassage">Next passage</span> →</button>
             </div>
           </article>
+          <section class="reading-quiz hidden" id="reading-quiz" aria-labelledby="reading-quiz-title">
+            <div class="reading-quiz-heading">
+              <div><p class="eyebrow" data-i18n="thinkBeyondWords">THINK BEYOND THE WORDS</p><h2 id="reading-quiz-title" data-i18n="readingCheck">Reading check</h2><p class="page-subtitle" data-i18n="quizIntro">Use evidence from the passage to make an inference, identify the author's stance, and think critically.</p></div>
+              <span class="count-pill" id="quiz-progress"></span>
+            </div>
+            <article class="quiz-card" id="quiz-card">
+              <div class="question-type" id="question-type"></div>
+              <h3 class="question-prompt" id="question-prompt"></h3>
+              <div class="answer-list" id="answer-list" role="group" aria-labelledby="question-prompt"></div>
+              <p class="quiz-feedback" id="quiz-feedback" aria-live="polite"></p>
+              <button class="button button-primary hidden" id="next-question" type="button">Next question <span aria-hidden="true">→</span></button>
+            </article>
+            <p class="quiz-source" id="quiz-source"></p>
+            <article class="results-card hidden" id="reading-results" aria-live="polite">
+              <span class="results-sparkle" aria-hidden="true">✳</span>
+              <p class="eyebrow" data-i18n="roundComplete">ROUND COMPLETE</p>
+              <h2 data-i18n="lookGrow">Look at you grow.</h2>
+              <p class="results-score" id="results-score"></p>
+              <p class="results-message" id="results-message"></p>
+              <div class="results-details" id="results-details"></div>
+              <div class="results-actions">
+                <button class="button button-primary" id="try-again" type="button"><span data-i18n="tryAgain">Try again</span> <span aria-hidden="true">↻</span></button>
+                <button class="button button-outline" id="results-next-passage" type="button"><span data-i18n="next">Next passage</span> <span aria-hidden="true">→</span></button>
+              </div>
+            </article>
+          </section>
           <div class="reading-tip"><span aria-hidden="true">✦</span><p><strong data-i18n="readingTip">Reading tip</strong> <span data-i18n="readingTipText">Notice the facts, then ask what the writer believes about them. Inference is about what the text suggests, not just what it states.</span></p></div>
         </section>
 
         <section class="screen hidden" id="conversations-screen" aria-labelledby="conversations-title">
           <div class="page-heading">
-            <div><p class="eyebrow" data-i18n="conversationPractice">SPEAK WITH CONFIDENCE</p><h1 id="conversations-title" data-i18n="dailyConversations">Daily Conversations</h1><p class="page-subtitle" data-i18n="conversationIntro">Practice useful English for everyday situations, one friendly exchange at a time.</p></div>
+            <div><p class="eyebrow" data-i18n="conversationPractice">EVERYDAY ENGLISH</p><h1 id="conversations-title" data-i18n="dailyConversations">Daily Conversations</h1><p class="page-subtitle" data-i18n="conversationIntro">Build confidence with useful English sentences for school, work, shopping, and everyday life.</p></div>
             <img class="page-mascot conversation-mascot" src="assets/ezy-bear-plane.png" alt="" aria-hidden="true">
           </div>
           <div class="conversation-topics" role="group" aria-label="Conversation topics" data-i18n-aria-label="conversationTopics">
-            <button class="topic-button active" type="button" data-conversation="greetings"><span aria-hidden="true">👋</span><span data-i18n="greetings">Greetings</span></button>
+            <button class="topic-button active" type="button" data-conversation="school" aria-pressed="true"><span aria-hidden="true">📚</span><span data-i18n="school">School</span></button>
+            <button class="topic-button" type="button" data-conversation="office" aria-pressed="false"><span aria-hidden="true">💼</span><span data-i18n="office">Office</span></button>
             <button class="topic-button" type="button" data-conversation="shopping"><span aria-hidden="true">🛍️</span><span data-i18n="shopping">Shopping</span></button>
             <button class="topic-button" type="button" data-conversation="food"><span aria-hidden="true">🥪</span><span data-i18n="orderingFood">Ordering food</span></button>
-            <button class="topic-button" type="button" data-conversation="directions"><span aria-hidden="true">🧭</span><span data-i18n="directions">Asking for directions</span></button>
+            <button class="topic-button" type="button" data-conversation="directions"><span aria-hidden="true">🧭</span><span data-i18n="directions">Getting around</span></button>
+            <button class="topic-button" type="button" data-conversation="appointments"><span aria-hidden="true">📅</span><span data-i18n="appointments">Appointments</span></button>
+            <button class="topic-button" type="button" data-conversation="quotes"><span aria-hidden="true">✨</span><span data-i18n="inspirationalQuotes">Inspirational quotes</span></button>
           </div>
           <article class="conversation-card">
             <div class="conversation-card-heading">
-              <div><p class="eyebrow" data-i18n="everydayEnglish">EVERYDAY ENGLISH</p><h2 id="conversation-title"></h2><p id="conversation-setting" class="conversation-setting"></p></div>
-              <button class="button button-outline" id="play-dialogue" type="button"><span aria-hidden="true">♫</span><span data-i18n="playDialogue">Play dialogue</span></button>
+              <div><p class="eyebrow" id="conversation-kind" data-i18n="everydayEnglish">SENTENCE PRACTICE</p><h2 id="conversation-title"></h2><p id="conversation-setting" class="conversation-setting"></p></div>
+              <span class="sentence-progress" id="conversation-progress" aria-live="polite"></span>
             </div>
-            <div class="dialogue-lines" id="dialogue-lines"></div>
+            <article class="sentence-card" aria-live="polite">
+              <p class="dialogue-english" id="dialogue-english"></p>
+              <p class="dialogue-chinese" id="dialogue-chinese"></p>
+              <p class="dialogue-author hidden" id="dialogue-author"></p>
+              <button class="line-audio" id="listen-sentence" type="button" aria-label="Listen to this sentence" data-i18n-aria-label="listenLine" title="Listen to this sentence">♫</button>
+            </article>
             <p class="conversation-status" id="conversation-status" aria-live="polite"></p>
             <div class="conversation-footer">
-              <span class="conversation-hint" data-i18n="conversationHint">Tap the speaker to hear each line in American English.</span>
-              <button class="button button-primary" id="conversation-quiz-start" type="button"><span data-i18n="quickQuiz">Quick quiz</span><span aria-hidden="true">→</span></button>
+              <span class="conversation-hint" data-i18n="conversationHint">Read the English sentence, check the Traditional Chinese translation, then listen to American English.</span>
+              <div class="sentence-navigation">
+                <button class="button button-outline" id="conversation-quiz-start" type="button" data-i18n="quickQuiz">Quick quiz</button>
+                <button class="button button-outline" id="previous-sentence" type="button" data-i18n="previousSentence">Previous</button>
+                <button class="button button-primary" id="next-sentence" type="button"><span data-i18n="nextSentence">Next</span><span aria-hidden="true">→</span></button>
+              </div>
             </div>
           </article>
           <section class="conversation-quiz hidden" id="conversation-quiz" aria-labelledby="conversation-question">
@@ -167,37 +212,6 @@
             <p class="conversation-feedback" id="conversation-feedback" aria-live="polite"></p>
             <button class="button button-outline conversation-retry hidden" id="conversation-quiz-retry" type="button" data-i18n="retryConversationQuiz">Try again</button>
           </section>
-        </section>
-
-        <section class="screen hidden" id="quiz-screen" aria-labelledby="quiz-title">
-          <div class="page-heading">
-            <div><p class="eyebrow" data-i18n="thinkBeyondWords">THINK BEYOND THE WORDS</p><h1 id="quiz-title" data-i18n="readingCheck">Reading check</h1><p class="page-subtitle" data-i18n="quizIntro">Use evidence from the passage to make an inference, identify the author's stance, and think critically.</p></div>
-            <img class="page-mascot quiz-mascot" src="assets/ezy-bear-quiz.png" alt="" aria-hidden="true">
-            <span class="count-pill" id="quiz-progress"></span>
-          </div>
-          <article class="quiz-card" id="quiz-card">
-            <div class="question-type" id="question-type"></div>
-            <h2 class="question-prompt" id="question-prompt"></h2>
-            <div class="answer-list" id="answer-list" role="group" aria-labelledby="question-prompt"></div>
-            <p class="quiz-feedback" id="quiz-feedback" aria-live="polite"></p>
-            <button class="button button-primary hidden" id="next-question" type="button">Next question <span aria-hidden="true">→</span></button>
-          </article>
-          <p class="quiz-source" id="quiz-source"></p>
-        </section>
-
-        <section class="screen hidden" id="results-screen" aria-labelledby="results-title" aria-live="polite">
-          <article class="results-card">
-            <span class="results-sparkle" aria-hidden="true">✳</span>
-            <p class="eyebrow" data-i18n="roundComplete">ROUND COMPLETE</p>
-            <h1 id="results-title" data-i18n="lookGrow">Look at you grow.</h1>
-            <p class="results-score" id="results-score"></p>
-            <p class="results-message" id="results-message"></p>
-            <div class="results-details" id="results-details"></div>
-            <div class="results-actions">
-              <button class="button button-primary" id="try-again" type="button"><span data-i18n="tryAgain">Try again</span> <span aria-hidden="true">↻</span></button>
-              <button class="button button-outline" type="button" data-screen="home" data-i18n="backHome">Back to home</button>
-            </div>
-          </article>
         </section>
 
         <section class="screen hidden" id="my-words-screen" aria-labelledby="my-words-title">
